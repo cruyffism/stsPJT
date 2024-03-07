@@ -1,4 +1,4 @@
-package gumin.center.member;
+package gumin.center.hello.member;
 import java.util.ArrayList;
 import java.util.List;
 

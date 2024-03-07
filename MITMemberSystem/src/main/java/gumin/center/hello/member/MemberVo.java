@@ -1,4 +1,4 @@
-package gumin.center.member;
+package gumin.center.hello.member;
 
 public class MemberVo {
 

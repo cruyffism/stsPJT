@@ -9,7 +9,7 @@
 <body>
 	<h3>This page is SIGN_UP.</h3>
 
-	<form action="/hello/signUpConfirm"> <!-- RequestMapping : submit 클릭 시 넘어가는 서버 주소-->
+	<form action="/member/signUpConfirm"> <!-- RequestMapping : submit 클릭 시 넘어가는 서버 주소-->
 		ID : <input type="text" name="m_id"><br />
 		PW : <input type="password" name="m_pw"><br />
 		MAIL : <input type="text" name="m_mail"><br />
