@@ -15,7 +15,7 @@
 		MAIL : <input type="text" name="m_mail"><br />
 		PHONE : <input type="text" name="m_phone"><br />
 		<input type="submit" value="SIGN UP">
-		<input type="reset" value="CANCEL">
+		<input type="button" value="CANCEL" onclick="location.href='/member'">
 	</form>
 </body>
 </html>

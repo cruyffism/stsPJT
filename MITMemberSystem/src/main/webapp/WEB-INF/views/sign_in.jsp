@@ -14,7 +14,7 @@
 	ID : <input type="text" name="m_id" ><br />
 	PW : <input type="password" name="m_pw" ><br />
 	<input type="submit" value="SIGN IN">
-	<input type="reset" value="CANCEL">
+	<input type="button" value="CANCEL" onclick="location.href='/member'">
 	</form>
 
 </body>

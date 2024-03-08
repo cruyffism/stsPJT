@@ -8,7 +8,10 @@
 </head>
 <body>
 
-	<h3>This page is SIGN_IN_OK.</h3>
+	<form action="/member">
+		<h3>This page is SIGN_IN_OK.</h3>
+		<input type="submit" value="Return Home">
+	</form>
 
 </body>
 </html>
