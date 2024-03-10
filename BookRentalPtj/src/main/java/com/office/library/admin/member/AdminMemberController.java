@@ -33,15 +33,15 @@ public class AdminMemberController {
 	public String createAccountConfirm(AdminMemberVo adminMemberVo) {
 		System.out.println("[AdminMemberController] createAccountConfirm()");
 		
-		String nextPage = "admin/member/create_account_ok";
+		String nextPage = "admin/member/create_account_ok"; //성공 시 주소 
 		
 		int result = adminMemberService.createAccountConfirm(adminMemberVo);
 		
 		if(result <= 0)
-			nextPage = "admin/member/create_account_ng";
+			nextPage = "admin/member/create_account_ng"; // 실패 시 주소 
 		
-		return nextPage;
-		
+		return nextPage; // 리턴값은 같지만 성공 여부에 따라 경로가 위 두 개로 갈림!
+
 		//return null;
 	}
 

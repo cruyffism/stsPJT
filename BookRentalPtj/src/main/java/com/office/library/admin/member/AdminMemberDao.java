@@ -23,7 +23,7 @@ public class AdminMemberDao {
 		String sql = "SELECT COUNT(*) FROM tbl_admin_member"
 				+ " WHERE a_m_id = ?";
 		
-		int result = jdbcTemplate.queryForObject(sql, Integer.class, a_m_id);
+		int result = jdbcTemplate.queryForObject(sql, Integer.class, a_m_id); // sql문, sql 결과값의 타입, ?에 들어갈 변수
 		
 		/*
 		 * if (result > 0) return true; else return false;

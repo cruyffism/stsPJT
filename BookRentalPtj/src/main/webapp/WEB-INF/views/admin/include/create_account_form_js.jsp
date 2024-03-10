@@ -6,9 +6,9 @@
 	function createAccountForm() {
 		console.log('createAccountForm() CALLED!!');
 		
-		let form = document.create_account_form;
+		let form = document.create_account_form; // form에 회원가입 정보들을 name별로 다 담음
 		
-		if (form.a_m_id.value == '') {
+		if (form.a_m_id.value == '') { //form.으로 꺼내서 항목별 공백인지 체크 
 			alert('INPUT ADMIN ID.');
 			form.a_m_id.focus();
 			
@@ -48,7 +48,7 @@
 			alert('INPUT ADMIN PHONE.');
 			form.a_m_phone.focus();
 			
-		} else {
+		} else { // 데이터를 조건에 맞게 다 쓰면 form태그 안에 액션을 취하게끔 실행! >> 
 			form.submit();
 			
 		}

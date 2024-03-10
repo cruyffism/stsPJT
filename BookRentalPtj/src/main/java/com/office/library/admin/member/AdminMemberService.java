@@ -16,17 +16,17 @@ public class AdminMemberService {
 	public int createAccountConfirm(AdminMemberVo adminMemberVo) {
 		System.out.println("[AdminMemberService] createAccountConfirm()");
 		
-		boolean isMember = adminMemberDao.isAdminMember(adminMemberVo.getA_m_id());
+		boolean isMember = adminMemberDao.isAdminMember(adminMemberVo.getA_m_id()); //기존에 회원 정보 있는지 체크
 		
-		if (!isMember) {
-			int result = adminMemberDao.insertAdminAccount(adminMemberVo);
+		if (!isMember) { // 기존에 회원정보가 없으면 
+			int result = adminMemberDao.insertAdminAccount(adminMemberVo); //회원 정보 저장
 			
 			if(result > 0)
-				return ADMIN_ACCOUNT_CREATE_SUCCESS; // 1
+				return ADMIN_ACCOUNT_CREATE_SUCCESS; // 1 저장이 잘 됐을때
 			else 				
-				return ADMIN_ACCOUNT_CREATE_FAIL; // -1
+				return ADMIN_ACCOUNT_CREATE_FAIL; // -1 저장 실패
 		} else {
-			return  ADMIN_ACCOUNT_ALREADY_EXIST; // 0
+			return  ADMIN_ACCOUNT_ALREADY_EXIST; // 0 회원 정보 있을때
 		}
 		
 		//return 0;
