@@ -34,7 +34,7 @@ public class AdminMemberController {
 		System.out.println("[AdminMemberController] createAccountConfirm()");
 		
 		String nextPage = "admin/member/create_account_ok"; //성공 시 주소 
-		
+
 		int result = adminMemberService.createAccountConfirm(adminMemberVo);
 		
 		if(result <= 0)
