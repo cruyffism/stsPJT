@@ -32,10 +32,10 @@ public class AdminMemberService {
 		//return 0;
 	}
 	
-	public AdminMemberVo loginConfirm(AdminMemberVo adminMemberVo) {
+	public AdminMemberVo loginConfirm(AdminMemberVo adminMemberVo) { // AdminMemberController에서 보낸 매개변수를 받는다
 		System.out.println("[AdminMemberService] loginConfirm()");
 		
-		AdminMemberVo loginAdminMemberVo = adminMemberDao.selectAdmin(adminMemberVo);
+		AdminMemberVo loginAdminMemberVo = adminMemberDao.selectAdmin(adminMemberVo); //AdminMemberDao의 리턴값인 adminMemberVos.get(0) or null을 담은 것
 		
 		if (loginAdminMemberVo != null)
 			System.out.println("[AdminMemberService] ADMIN MEMBER LOGIN SUCCESS!!");

@@ -94,17 +94,17 @@ public class AdminMemberDao {
 			
 		}
 	 	
-	 	public AdminMemberVo selectAdmin(AdminMemberVo adminMemberVo) {
+	 	public AdminMemberVo selectAdmin(AdminMemberVo adminMemberVo) { // AdminMemberService에서 보낸 매개변수를 받는다
 	 		System.out.println("[AdminMemberDao] selectAdmin()");
 	 		
-	 		String sql = "SELECT * FROM tbl_adin_memeber "
-	 				   + "WHERE a_m_id = ? AND a_m_approval > 0";
+	 		String sql = "SELECT * FROM tbl_admin_memeber "
+	 				   + "WHERE a_m_id = ? AND a_m_approval > 0"; //좌측과 같은 조건에 sql을 조회하라
 	 		
-	 		// 조회한 회원정보를 저장하는 List로 일치하는 회원이 검색된 경우 adminMemberVos의 길이는 1, 그렇지 않으면 0
-	 		List<AdminMemberVo> adminMemberVos = new ArrayList<AdminMemberVo>();
 	 		
-	 		try {
-	 				adminMemberVos = jdbcTemplate.query(sql, new RowMapper<AdminMemberVo>() {  //3개의 파라미터를 받는다!
+	 		List<AdminMemberVo> adminMemberVos = new ArrayList<AdminMemberVo>(); // 리스트 타입의 객체 생성
+	 		
+	 		try {										// sql문, sql 결과값의 타입, ?에 들어갈 변수			
+	 				adminMemberVos = jdbcTemplate.query(sql, new RowMapper<AdminMemberVo>() {  //adminMemberVos에 저 쿼리의 결과를 담는다!
 	 					
 	 					@Override
 	 					public AdminMemberVo mapRow(ResultSet rs, int rowNum) throws SQLException { //mapRow()는 ResultSet과 행의 개수를 파라미터로 받는다
@@ -129,17 +129,17 @@ public class AdminMemberDao {
 	 						
 	 						}
 	 						
-	 					}, adminMemberVo.getA_m_id());
+	 					}, adminMemberVo.getA_m_id()); // 여기 getA_m_id()가 위에 sql문 ?에 들어감
 	 						//암호화된 문자열을 비교하는 메서드 :passwordEncoder의 matches()
-	 					if (!passwordEncoder.matches(adminMemberVo.getA_m_pw(), // 결과가 false라면 비밀번호가 안 맞는걸로 판단하여 
+	 					if (!passwordEncoder.matches(adminMemberVo.getA_m_pw(), // matches(a,b) 결과가 false라면 비밀번호가 안 맞는걸로 판단하여 if문 true타고
 	 						 adminMemberVos.get(0).getA_m_pw()))
 	 						 adminMemberVos.clear();    //조회된 데이터는 삭제
 	 							
-	 				} catch (Exception e) {
+	 				} catch (Exception e) { //시스템적인 에러 
 	 					e.printStackTrace();
 	 			}
 	 			
-	 			return 	adminMemberVos.size() > 0 ? adminMemberVos.get(0) : null; // 0보다 크면 로그인 인증에 성공 및 조호된 과리자 정보를 서비스에 반환 
+	 			return 	adminMemberVos.size() > 0 ? adminMemberVos.get(0) : null; // 0보다 크면 로그인 인증에 성공 및 조회된 관리자 정보를 서비스에 반환 
 	 		}                                                                     // 길이가 0 이하라면 로그인 인증 실패 및 서비스에 null 반환
 	 		
 	 	}

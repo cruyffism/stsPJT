@@ -54,14 +54,15 @@ public class AdminMemberController {
 		return nextPage;
 	}
 	
+	// 클릭 한 번에 왕복이 이루어짐(컨트롤러>>서비스>>다오>>서비스>>컨트롤러)
 	//로그인 확인
-	@PostMapping("/loginConfirm")
-	public String loginConfirm(AdminMemberVo adminMemberVo) {
+	@PostMapping("/loginConfirm")	//프론트(login_form.jsp)에서 넘어온 값을 adminMemberVo(name="a_m_id",name="a_m_pw")라는 매개변수로 받음   
+	public String loginConfirm(AdminMemberVo adminMemberVo) { //이 매개변수를 adminMemberVo에 담아서 loginConfirm 메서드를 호출 할 때 같이 보낸다 !
 		System.out.println("[AdminMemberController] loginConfirm()");
 		
 		String nextPage = "admin/member/login_ok";
-		
-		AdminMemberVo loginAdminMemberVo = adminMemberService.loginConfirm(adminMemberVo);
+																			//매개변수를 쓰는 이유는 이렇게 가져다 쓰려고! 
+		AdminMemberVo loginAdminMemberVo = adminMemberService.loginConfirm(adminMemberVo); // AdminMemberService의 리턴값인 loginAdminMemberVo를 담은 것
 		
 		if (loginAdminMemberVo == null) {
 			nextPage = "admin/member/login_ng";
