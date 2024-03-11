@@ -14,6 +14,7 @@ public class AdminMemberController {
 	@Autowired
 	AdminMemberService adminMemberService;
 	
+	//회원 가입
 	/* @RequestMapping(value = "/createAccountForm", method= RequestMethod.GET) */
 	//@RequestMapping("/createAccountForm")
 	@GetMapping("/createAccountForm")
@@ -26,10 +27,8 @@ public class AdminMemberController {
 	}
 	
 	/* 회원 가입 확인 */
-	/*
-	 * @RequestMapping(value = "/createAccountConfirm", method= RequestMethod.POST)
-	 */
-	@PostMapping("/createAccountConfirm")
+	//@RequestMapping(value = "/createAccountConfirm", method= RequestMethod.POST)
+	@PostMapping("/createAccountConfirm") // 입력 된 데이터를 view로 보낼 때 @PostMapping 사용
 	public String createAccountConfirm(AdminMemberVo adminMemberVo) {
 		System.out.println("[AdminMemberController] createAccountConfirm()");
 		
@@ -44,5 +43,35 @@ public class AdminMemberController {
 
 		//return null;
 	}
+	
+	//로그인
+	@GetMapping("/loginForm")
+	public String loginForm() {
+		System.out.println("[AdminMemberController] loginForm()");
+		
+		String nextPage = "admin/member/login_form";
+		
+		return nextPage;
+	}
+	
+	//로그인 확인
+	@PostMapping("/loginConfirm")
+	public String loginConfirm(AdminMemberVo adminMemberVo) {
+		System.out.println("[AdminMemberController] loginConfirm()");
+		
+		String nextPage = "admin/member/login_ok";
+		
+		AdminMemberVo loginAdminMemberVo = adminMemberService.loginConfirm(adminMemberVo);
+		
+		if (loginAdminMemberVo == null) {
+			nextPage = "admin/member/login_ng";
+		} else {
+			
+		}
+		
+		return nextPage;
+	}
+	
+	
 
 }
