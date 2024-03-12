@@ -1,5 +1,7 @@
 package com.office.library.admin.member;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +18,10 @@ public class AdminMemberService {
 	public int createAccountConfirm(AdminMemberVo adminMemberVo) {
 		System.out.println("[AdminMemberService] createAccountConfirm()");
 		
-		boolean isMember = adminMemberDao.isAdminMember(adminMemberVo.getA_m_id()); //기존에 회원 정보 있는지 체크
+		boolean isMember = adminMemberDao.isAdminMember(adminMemberVo.getA_m_id()); //기존에 회원 정보 있는지 체크 >> false이면 기존에 회원 정보 없는거
 		
-		if (!isMember) { // 기존에 회원정보가 없으면 
-			int result = adminMemberDao.insertAdminAccount(adminMemberVo); //회원 정보 저장
+		if (!isMember) { // 기존에 회원정보가 없으면 if문은 true이므로 
+			int result = adminMemberDao.insertAdminAccount(adminMemberVo); //회원 정보 저장, AdminMemberDao의 리턴값인 result를 담은 것.
 			
 			if(result > 0)
 				return ADMIN_ACCOUNT_CREATE_SUCCESS; // 1 저장이 잘 됐을때
@@ -45,6 +47,12 @@ public class AdminMemberService {
 		
 		return loginAdminMemberVo;
 		
+	}
+	
+	public List<AdminMemberVo> listupAdmin() {
+		System.out.println("[AdminMemberService] listupAdmin()");
+		
+		return adminMemberDao.selectAdmins();
 	}
 
 }

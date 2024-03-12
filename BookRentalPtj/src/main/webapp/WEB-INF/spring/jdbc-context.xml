@@ -11,7 +11,7 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 		
 	<!-- <context:property-placeholder location="/WEB-INF/spring/property/real.info.properties" /> -->
-	
+
 	<!-- MariaDB connection 객체 -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.mariadb.jdbc.Driver" />

@@ -97,7 +97,7 @@ public class AdminMemberDao {
 	 	public AdminMemberVo selectAdmin(AdminMemberVo adminMemberVo) { // AdminMemberService에서 보낸 매개변수를 받는다
 	 		System.out.println("[AdminMemberDao] selectAdmin()");
 	 		
-	 		String sql = "SELECT * FROM tbl_admin_memeber "
+	 		String sql = "SELECT * FROM tbl_admin_member "
 	 				   + "WHERE a_m_id = ? AND a_m_approval > 0"; //좌측과 같은 조건에 sql을 조회하라
 	 		
 	 		
@@ -142,6 +142,51 @@ public class AdminMemberDao {
 	 			return 	adminMemberVos.size() > 0 ? adminMemberVos.get(0) : null; // 0보다 크면 로그인 인증에 성공 및 조회된 관리자 정보를 서비스에 반환 
 	 		}                                                                     // 길이가 0 이하라면 로그인 인증 실패 및 서비스에 null 반환
 	 		
+	 	public List<AdminMemberVo> selectAdmins() {
+			System.out.println("[AdminMemberDao] selectAdmins()");
+			
+			String sql =  "SELECT * FROM tbl_admin_member";
+		
+			List<AdminMemberVo> adminMemberVos = new ArrayList<AdminMemberVo>();
+			
+			try {
+				
+				adminMemberVos = jdbcTemplate.query(sql, new RowMapper<AdminMemberVo>() {
+					
+					@Override
+					public AdminMemberVo mapRow(ResultSet rs, int rowNum) throws SQLException {
+						
+						AdminMemberVo adminMemberVo = new AdminMemberVo();
+						
+						adminMemberVo.setA_m_no(rs.getInt("a_m_no"));
+						adminMemberVo.setA_m_approval(rs.getInt("a_m_approval"));
+						adminMemberVo.setA_m_id(rs.getString("a_m_id"));
+						adminMemberVo.setA_m_pw(rs.getString("a_m_pw"));
+						adminMemberVo.setA_m_name(rs.getString("a_m_name"));
+						adminMemberVo.setA_m_gender(rs.getString("a_m_gender"));
+						adminMemberVo.setA_m_part(rs.getString("a_m_part"));
+						adminMemberVo.setA_m_position(rs.getString("a_m_position"));
+						adminMemberVo.setA_m_mail(rs.getString("a_m_mail"));
+						adminMemberVo.setA_m_phone(rs.getString("a_m_phone"));
+						adminMemberVo.setA_m_reg_date(rs.getString("a_m_reg_date"));
+						adminMemberVo.setA_m_mod_date(rs.getString("a_m_mod_date"));
+						
+						return adminMemberVo;
+						
+					}
+					
+				});
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				
+			}
+			
+			return adminMemberVos;
+			
+		}
+	 		
+	 	
 	 	}
 	
 	 	
