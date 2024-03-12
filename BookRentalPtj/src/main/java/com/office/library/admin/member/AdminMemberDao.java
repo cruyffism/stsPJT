@@ -185,9 +185,26 @@ public class AdminMemberDao {
 			return adminMemberVos;
 			
 		}
-	 		
-	 	
+	 		public int updateAdminAccount(int a_m_no) {
+	 			System.out.println("[AdminMemberDao] updateAdminAccount()");
+	 			
+	 			String sql = "UPDATE tbl_admin_member SET "
+	 					   + "a_m_approval = 1 "
+	 					   + "WHERE a_m_no = ?";
+	 			
+	 			int result = -1;
+	 			
+	 			try {
+	 				
+	 				result = jdbcTemplate.update(sql, a_m_no);
+	 				
+	 			} catch (Exception e) {
+					e.printStackTrace();
+	 		}
+	 			return result;
 	 	}
+	 		
+	}
 	
 	 	
 

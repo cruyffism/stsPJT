@@ -44,7 +44,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="item" items="${adminMemberVos}">
+						<c:forEach var="item" items="${adminMemberVos}"> <!-- 서버에서 전달된 데이터는 "${adminMemberVos}"로 받는다.  -->
 							<tr>
 								<td>${item.a_m_id}</td>
 								<td>${item.a_m_name}</td>
@@ -57,7 +57,7 @@
 									<c:choose>
 										<c:when test="${item.a_m_approval eq 0}">
 											<c:url value='/admin/member/setAdminApproval' var='approval_url'>
-												<c:param name='a_m_no' value='${item.a_m_no}'/>
+												<c:param name='a_m_no' value='${item.a_m_no}'/> <!--name으로 일치시켜서 value 값을 넣는다!   -->
 											</c:url>
 											<a href="${approval_url}">승인처리</a>
 										</c:when>

@@ -15,6 +15,7 @@ public class AdminMemberService {
 	@Autowired
 	AdminMemberDao adminMemberDao;
 	
+	//회원가입 처리 메서드
 	public int createAccountConfirm(AdminMemberVo adminMemberVo) {
 		System.out.println("[AdminMemberService] createAccountConfirm()");
 		
@@ -53,6 +54,12 @@ public class AdminMemberService {
 		System.out.println("[AdminMemberService] listupAdmin()");
 		
 		return adminMemberDao.selectAdmins();
+	}
+	
+	public void setAdminApproval(int a_m_no) {
+		System.out.println("[AdminMemberService] setAdminApproval()");
+		
+		int result = adminMemberDao.updateAdminAccount(a_m_no);
 	}
 
 }

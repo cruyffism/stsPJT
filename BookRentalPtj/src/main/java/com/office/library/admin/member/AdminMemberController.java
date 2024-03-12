@@ -6,12 +6,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 /*import org.springframework.web.bind.annotation.RequestMethod;*/
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/admin/member")
@@ -68,12 +69,12 @@ public class AdminMemberController {
 		
 		String nextPage = "admin/member/login_ok";
 																			//매개변수를 쓰는 이유는 이렇게 가져다 쓰려고! 
-		AdminMemberVo loginAdminMemberVo = adminMemberService.loginConfirm(adminMemberVo); // AdminMemberService의 리턴값인 loginAdminMemberVo를 담은 것
+		AdminMemberVo loginedAdminMemberVo = adminMemberService.loginConfirm(adminMemberVo); // AdminMemberService의 리턴값인 loginAdminMemberVo를 담은 것
 		
-		if (loginAdminMemberVo == null) {
+		if (loginedAdminMemberVo == null) {
 			nextPage = "admin/member/login_ng";
 		} else {
-			session.setAttribute("loginedAdminMemberVo", loginAdminMemberVo); // 로그인 정보 저장.. (저장할 데이터의 이름, 실제 데이터)
+			session.setAttribute("loginedAdminMemberVo", loginedAdminMemberVo); // 로그인 정보 저장.. (저장할 데이터의 이름, 실제 데이터)
 			session.setMaxInactiveInterval(60*30); // 세선 유효기간 
 			
 		}
@@ -94,18 +95,49 @@ public class AdminMemberController {
 		return nextPage;
 	}
 	
-	//관리자 목록
-	@RequestMapping(value = "/listupAdmin", method = RequestMethod.GET)
-	public String listupAdmin(Model model) {
+	//관리자 목록(model 사용)
+	/*
+	 * @RequestMapping(value = "/listupAdmin", method = RequestMethod.GET) public
+	 * String listupAdmin(Model model) {
+	 * System.out.println("[AdminMemberController] modifyAccountConfirm()");
+	 * 
+	 * String nextPage = "admin/member/listup_admins";
+	 * 
+	 * List<AdminMemberVo> adminMemberVos = adminMemberService.listupAdmin();
+	 * 
+	 * model.addAttribute("adminMemberVos", adminMemberVos);
+	 * 
+	 * return nextPage; }
+	 */
+	
+	//관리자 목록(ModelandView 사용)
+	@RequestMapping(value = "/listupAdmin", method = RequestMethod.GET) 
+	public ModelAndView listupAdmin() {
+		
 		System.out.println("[AdminMemberController] modifyAccountConfirm()");
 		
 		String nextPage = "admin/member/listup_admins";
 		
 		List<AdminMemberVo> adminMemberVos = adminMemberService.listupAdmin();
 		
-		model.addAttribute("adminMemberVos", adminMemberVos);
+		ModelAndView modelAndView = new ModelAndView(); // ModelAndView 객체를 생성
+		modelAndView.setViewName(nextPage);             // ModelAndView에 view를 설정
+		modelAndView.addObject("adminMemberVos", adminMemberVos); // ModelAndView에 데이터를 추가
+		
+		return modelAndView; // ModelAndView를 반환
+	}
+	
+	//관리자 승인
+	//@RequestMapping(value = "/setAdminApproval", method = RequestMethod.GET)
+	@GetMapping("/setAdminApproval")
+	public String setAdminApproval(@RequestParam("a_m_no") int a_m_no) {
+		System.out.println("[AdminMemberController] setAdminApproval()");
+		
+		String nextPage = "redirect:/admin/member/listupAdmin";
+		
+		adminMemberService.setAdminApproval(a_m_no);
 		
 		return nextPage;
+		
 	}
-
 }

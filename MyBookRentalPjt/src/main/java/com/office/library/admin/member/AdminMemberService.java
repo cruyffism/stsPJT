@@ -1,5 +1,7 @@
 package com.office.library.admin.member;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +31,27 @@ public class AdminMemberService {
 			return ADMIN_ACCOUNT_CREATE_EXIST; // 0: 실패 (중복 아이디)
 		}
 	}
-
+	
+	public AdminMemberVo loginConfirm(AdminMemberVo adminMemberVo) {// AdminMemberController에서 보낸 매개변수를 받는다
+		
+		AdminMemberVo loginAdminMemberVo = adminMemberDao.selectAdmin(adminMemberVo); //AdminMemberDao의 리턴값인 adminMemberVos.get(0) or null을 담은 것
+		
+		if(loginAdminMemberVo != null) 
+			System.out.println("[AdminMemberService] ADMIN MEMBER LOGIN SUCCESS!!");
+		
+		else 
+			
+			System.out.println("[AdminMemberService] ADMIN MEMBER LOGIN FAIL!!");
+		
+		return loginAdminMemberVo;
+	}
+	
+	public List<AdminMemberVo> listupAdmin() { 
+		return adminMemberDao.selectAdmins();
+	}
+	
+	public void setAdminApproval(int a_m_no) {
+		
+		int result = adminMemberDao.updateAdminAccount(a_m_no);// Dao에 관리자 번호를 전달해서 a_m_approval 값을 0에서 1로 업데이트하게 한다.
+	}
 }
