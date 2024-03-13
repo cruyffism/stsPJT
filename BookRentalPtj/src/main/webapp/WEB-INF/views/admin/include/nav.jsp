@@ -20,7 +20,7 @@
 		<div class="menu">
 			<ul>
 				<li><a href="<c:url value='/admin/member/logoutConfirm' />">로그아웃</a></li>
-				<li><a href="<c:url value='/admin/member/modifyAccountForm' />">계정수정</a></li>
+				<li><a href="<c:url value='/admin/member/modifyAccountForm' />">계정수정</a></li> <!--1.계정수정 버튼 클릭 시  -->
 				
 				<c:if test="${loginedAdminMemberVo.a_m_id eq 'super admin'}">
 					<li><a href="<c:url value='/admin/member/listupAdmin' />">관리자목록</a></li>

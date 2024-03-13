@@ -98,7 +98,7 @@ public class AdminMemberController {
 		return modelAndView;
 		
 	}
-	
+	//관리자 승인
 	@GetMapping("/setAdminApproval")
 	public String setAdminApproval(@RequestParam("a_m_no") int a_m_no) {
 		
@@ -109,5 +109,21 @@ public class AdminMemberController {
 		return nextPage;
 		
 	}
+	
+	//회원 정보 수정
+	@GetMapping("/modifyAccountForm")
+	public String modifyAccountForm(HttpSession session) { // 현재 관리자가 로그인하고있는지 용도로 session 변수를 받음		
+		String nextPage = "admin/member/modify_account_form";
+		
+		AdminMemberVo loginedAdminMemberVo = (AdminMemberVo) session.getAttribute("loginedAdminMemberVo");
+		if(loginedAdminMemberVo == null)
+			nextPage = "redirect:/admin/member/loginForm";
+		
+		return nextPage;
+	}
+	
+	//회원 정보 수정 확인
+	@PostMapping("/modifyAccountConfirm")
+	public String modifyAccountConfirm(AdminMemberVo adminMemberVo, HttpSession session) // /modify_account_form 파일의 action 경로를 통해 파라미터 값을 받는다.
 	
 }

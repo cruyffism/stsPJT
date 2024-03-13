@@ -140,4 +140,66 @@ public class AdminMemberController {
 		return nextPage;
 		
 	}
+	
+	//회원 정보 수정
+	@GetMapping("/modifyAccountForm")  // 2. 회원 정보 수정 메서드가 실행되고 loginedAdminMemberVo가 null이 아니면 modify_account_form으로 데이터를 전송
+	public String modifyAccountForm(HttpSession session) { // 현재 관리자가 로그인하고있는지 용도로 session 변수를 받음
+		System.out.println("[AdminMemberController] modifyAccountForm()"); 
+		
+		String nextPage = "admin/member/modify_account_form";
+		
+		AdminMemberVo loginedAdminMemberVo = (AdminMemberVo) session.getAttribute("loginedAdminMemberVo");
+		if(loginedAdminMemberVo == null)
+			nextPage = "redirect:/admin/member/loginForm";
+		
+		return nextPage;
+	}
+	
+	//회원 정보 수정 확인
+	@PostMapping("/modifyAccountConfirm")
+	public String modifyAccountConfirm(AdminMemberVo adminMemberVo, HttpSession session) { // /modify_account_form 파일의 action 경로를 통해 파라미터 값을 받는다.
+		System.out.println("[AdminMemberController] modifyAccountConfirm()");
+		
+		String nextPage = "admin/member/modify_account_ok";
+		
+		int result = adminMemberService.modifyAccountConfirm(adminMemberVo);
+		
+		if(result > 0) {
+			AdminMemberVo loginedAdminMemberVo =
+			adminMemberService.getLoginedAdminMemberVo(adminMemberVo.getA_m_no());	
+			
+			session.setAttribute("loginedAdminMemberVo", loginedAdminMemberVo);
+			session.setMaxInactiveInterval(60 * 30);
+		}else {
+			nextPage = "admin/member/modify_account_ng";
+		}
+		
+		return nextPage;
+	}
+	
+	//비밀번호 찾기
+	@GetMapping("/findPasswordForm")
+	public String findPasswordForm() {
+		System.out.println("[AdminMemberController] findPasswordForm()");
+		
+		String nextPage = "admin/member/find_password_form";
+		
+		return nextPage;
+	}
+	
+	//비밀번호 찾기 확인
+	@PostMapping("/findPasswordConfirm") 
+	public String findPasswordConfirm(AdminMemberVo adminMemberVo) {
+		System.out.println("[AdminMemberController] findPasswordConfirm()");
+		
+		String nextPage = "admin/member/find_password_ok";
+		
+		int result = adminMemberService.findPasswordConfirm(adminMemberVo);
+		
+		if (result <= 0) {
+			nextPage = "admin/member/find_password_ng";
+			
+		}
+		return nextPage;
+	}
 }

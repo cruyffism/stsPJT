@@ -31,7 +31,7 @@
 				
 			</div>
 		
-			<div class="modify_account_form">
+			<div class="modify_account_form"> <!--3.전송 받은 데이터를 저장하고 이를 보내면  컨트롤러의 modifyAccountConfirm 메서드가 해당 요청을처리  -->
 			
 				<form action="<c:url value='/admin/member/modifyAccountConfirm' />" name="modify_account_form" method="post">
 					
