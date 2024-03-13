@@ -149,7 +149,7 @@ public class AdminMemberService {
 			@Override
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				final MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-				mimeMessageHelper.setTo("taehoedu@gamil.com"); //받는 메일 주소
+				mimeMessageHelper.setTo("mkhong916@gmail.com"); //받는 메일 주소
 				mimeMessageHelper.setTo(toMailAddr); 
 				mimeMessageHelper.setSubject("[한국 도서관] 새 비밀번호 안내입니다."); //제목
 				mimeMessageHelper.setText("새 비밀번호 : " + newPassword, true); // 내용 

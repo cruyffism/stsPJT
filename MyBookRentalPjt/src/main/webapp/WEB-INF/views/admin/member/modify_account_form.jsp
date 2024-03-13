@@ -38,7 +38,7 @@
 					<input type="hidden" name="a_m_no" value="${loginedAdminMemberVo.a_m_no}">
 					
 					<input type="text" name="a_m_id" value="${loginedAdminMemberVo.a_m_id}" readonly disabled> <br>
-					<input type="password" name="a_m_pw" value="******" readonly disabled> <br>
+					<input type="password" name="a_m_pw"> <br>
 					<input type="text" name="a_m_name" value="${loginedAdminMemberVo.a_m_name}" placeholder="INPUT USER NAME."> <br>
 					<select name="a_m_gender">
 						<option value="">SELECET USER GENDER.</option>
