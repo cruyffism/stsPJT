@@ -1,4 +1,4 @@
-package com.office.library.book.admin;
+package com.office.library.book.user;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,71 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.office.library.book.BookVo;
+import com.office.library.book.HopeBookVo;
 import com.office.library.book.RentalBookVo;
 
 @Component
-//@Component("admin.BookDao")
+//@Component("user.BookDao")
 public class BookDao {
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
-	
-	public boolean isISBN(String b_isbn) {
-		System.out.println("[BookDao] isISBN()");
-		
-		String sql = "SELECT COUNT(*) FROM tbl_book "
-				   + "WHERE b_isbn = ?";
-		
-		int result = jdbcTemplate.queryForObject(sql, Integer.class, b_isbn);
-		
-		return result > 0 ? true : false;
-	
-	}
-	
-	//도서 등록
-	public int insertBook(BookVo bookVo) {
-		System.out.println("[BookDao] insertBook()");
-		
-		String sql = "INSERT INTO tbl_book(b_thumbnail, "
-				+ "b_name, "
-				+ "b_author, "
-				+ "b_publisher, "
-				+ "b_publish_year, "
-				+ "b_isbn, "
-				+ "b_call_number, "
-				+ "b_rantal_able, "
-				+ "b_reg_date, "
-				+ "b_mod_date) "
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
 
-      int result = -1;
-      
-      try {
-    	  result = jdbcTemplate.update(sql, 
-    			  bookVo.getB_thumbnail(),
-    			  bookVo.getB_name(),
-    			  bookVo.getB_author(),
-    			  bookVo.getB_publisher(),
-    			  bookVo.getB_publish_year(),
-    			  bookVo.getB_isbn(),
-    			  bookVo.getB_call_number(),
-    			  bookVo.getB_rantal_able(),
-    			  bookVo.getB_reg_date(),
-    			  bookVo.getB_mod_date()
-    			  );
-    			 
-      } catch (Exception e) {
-    	  e.printStackTrace();
-      }
-		return result;
-	}
-	
-	//도서 검색
 	public List<BookVo> selectBooksBySearch(BookVo bookVo) {
 		System.out.println("[BookDao] selectBooks()");
 		
@@ -105,7 +56,7 @@ public class BookDao {
 					
 				}
 				
-			}, "%" + bookVo.getB_name() + "%"); // 검색어가 들어가 있는 어떤 데이터도 들어갈 수 있다.
+			}, "%" + bookVo.getB_name() + "%");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -159,50 +110,17 @@ public class BookDao {
 		
 	}
 	
-	public int updateBook(BookVo bookVo) {
-		System.out.println("[BookDao] updateBook()");
+	public int insertRentalBook(int b_no, int u_m_no) {
+		System.out.println("[BookDao] insertRentalBook()");
 		
-		List<String> args = new ArrayList<String>();
-		
-		String sql =  "UPDATE tbl_book SET ";
-		
-			   if (bookVo.getB_thumbnail() != null) { // 썸네일 값이 null이 아니면 표지를 변경해라!
-				   sql += "b_thumbnail = ?, ";
-				   args.add(bookVo.getB_thumbnail());
-			   }
-			   
-			   sql += "b_name = ?, ";
-			   args.add(bookVo.getB_name());
-			   
-			   sql += "b_author = ?, ";
-			   args.add(bookVo.getB_author());
-			   
-			   sql += "b_publisher = ?, ";
-			   args.add(bookVo.getB_publisher());
-			   
-			   sql += "b_publish_year = ?, ";
-			   args.add(bookVo.getB_publish_year());
-			   
-			   sql += "b_isbn = ?, ";
-			   args.add(bookVo.getB_isbn());
-			   
-			   sql += "b_call_number = ?, ";
-			   args.add(bookVo.getB_call_number());
-			   
-			   sql += "b_rantal_able = ?, ";
-			   args.add(Integer.toString(bookVo.getB_rantal_able()));
-			   
-			   sql += "b_mod_date = NOW() ";
-			   
-			   sql += "WHERE b_no = ?";
-			   args.add(Integer.toString(bookVo.getB_no()));
-			   
+		String sql =  "INSERT INTO tbl_rental_book(b_no, u_m_no, rb_start_date, rb_reg_date, rb_mod_date) "
+					+ "VALUES(?, ?, NOW(), NOW(), NOW())";
 		
 		int result = -1;
 		
 		try {
 			
-			result = jdbcTemplate.update(sql, args.toArray());
+			result = jdbcTemplate.update(sql, b_no, u_m_no);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -213,23 +131,25 @@ public class BookDao {
 		
 	}
 	
-	public int deleteBook(int b_no) {
-		System.out.println("[BookDao] deleteBook()");
+	public void updateRentalBookAble(int b_no) {
+		System.out.println("[BookDao] updateRentalBookAble()");
 		
-		String sql = "DELETE FROM tbl_book "
-				   + "WHERE b_no = ?";
-		
-		int result = -1;
+		String sql =  "UPDATE tbl_book "
+					+ "SET b_rantal_able = 0 "
+					+ "WHERE b_no = ?";
 		
 		try {
-			result = jdbcTemplate.update(sql, b_no);
+			
+			jdbcTemplate.update(sql, b_no);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 		}
-		return result;
+		
 	}
 	
-	public List<RentalBookVo> selectRentalBooks() {
+	public List<RentalBookVo> selectRentalBooks(int u_m_no) {
 		System.out.println("[BookDao] selectRentalBooks()");
 		
 		String sql =  "SELECT * FROM tbl_rental_book rb "
@@ -237,8 +157,7 @@ public class BookDao {
 					+ "ON rb.b_no = b.b_no "
 					+ "JOIN tbl_user_member um "
 					+ "ON rb.u_m_no = um.u_m_no "
-					+ "WHERE rb.rb_end_date = '1000-01-01' "
-					+ "ORDER BY um.u_m_id ASC, rb.rb_reg_date DESC";
+					+ "WHERE rb.u_m_no = ? AND rb.rb_end_date = '1000-01-01'";
 		
 		List<RentalBookVo> rentalBookVos = new ArrayList<RentalBookVo>();
 		
@@ -282,7 +201,7 @@ public class BookDao {
 					
 				}
 				
-			});
+			}, u_m_no);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -293,39 +212,87 @@ public class BookDao {
 		
 	}
 	
-	public int updateRentalBook(int rb_no) {
-		System.out.println("[BookDao] updateRentalBook()");
+	public List<RentalBookVo> selectRentalBookHistory(int u_m_no) {
+		System.out.println("[BookDao] selectRentalBooks()");
 		
-		String sql =  "UPDATE tbl_rental_book "
-					+ "SET rb_end_date = NOW() "
-					+ "WHERE rb_no = ?";
+		String sql =  "SELECT * FROM tbl_rental_book rb "
+					+ "JOIN tbl_book b "
+					+ "ON rb.b_no = b.b_no "
+					+ "JOIN tbl_user_member um "
+					+ "ON rb.u_m_no = um.u_m_no "
+					+ "WHERE rb.u_m_no = ? "
+					+ "ORDER BY rb.rb_reg_date DESC";
 		
-		int result = -1;
+		List<RentalBookVo> rentalBookVos = new ArrayList<RentalBookVo>();
 		
 		try {
 			
-			result = jdbcTemplate.update(sql, rb_no);
+			rentalBookVos = jdbcTemplate.query(sql, new RowMapper<RentalBookVo>() {
+
+				@Override
+				public RentalBookVo mapRow(ResultSet rs, int rowNum) throws SQLException {
+					
+					RentalBookVo rentalBookVo = new RentalBookVo();
+					
+					rentalBookVo.setRb_no(rs.getInt("rb_no"));
+					rentalBookVo.setB_no(rs.getInt("b_no"));
+					rentalBookVo.setU_m_no(rs.getInt("u_m_no"));
+					rentalBookVo.setRb_start_date(rs.getString("rb_start_date"));
+					rentalBookVo.setRb_end_date(rs.getString("rb_end_date"));
+					rentalBookVo.setRb_reg_date(rs.getString("rb_reg_date"));
+					rentalBookVo.setRb_mod_date(rs.getString("rb_mod_date"));
+					
+					rentalBookVo.setB_thumbnail(rs.getString("b_thumbnail"));
+					rentalBookVo.setB_name(rs.getString("b_name"));
+					rentalBookVo.setB_author(rs.getString("b_author"));
+					rentalBookVo.setB_publisher(rs.getString("b_publisher"));
+					rentalBookVo.setB_publish_year(rs.getString("b_publish_year"));
+					rentalBookVo.setB_isbn(rs.getString("b_isbn"));
+					rentalBookVo.setB_call_number(rs.getString("b_call_number"));
+					rentalBookVo.setB_rantal_able(rs.getInt("b_rantal_able"));
+					rentalBookVo.setB_reg_date(rs.getString("b_reg_date"));
+					
+					rentalBookVo.setU_m_id(rs.getString("u_m_id"));
+					rentalBookVo.setU_m_pw(rs.getString("u_m_pw"));
+					rentalBookVo.setU_m_name(rs.getString("u_m_name"));
+					rentalBookVo.setU_m_gender(rs.getString("u_m_gender"));
+					rentalBookVo.setU_m_mail(rs.getString("u_m_mail"));
+					rentalBookVo.setU_m_phone(rs.getString("u_m_phone"));
+					rentalBookVo.setU_m_reg_date(rs.getString("u_m_reg_date"));
+					rentalBookVo.setU_m_mod_date(rs.getString("u_m_mod_date"));
+					
+					return rentalBookVo;
+					
+				}
+				
+			}, u_m_no);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			
 		}
 		
-		return result;
+		return rentalBookVos;
+		
 	}
 	
-	public int updateBook(int b_no) {
-		System.out.println("[BookDao] updateRentalBook()");
+	public int insertHopeBook(HopeBookVo hopeBookVo) {
+		System.out.println("[BookDao] insertHopeBook()");
 		
-		String sql =  "UPDATE tbl_book "
-					+ "SET b_rantal_able = 1 "
-					+ "WHERE b_no = ?";
+		String sql =  "INSERT INTO tbl_hope_book(u_m_no, hb_name, hb_author, hb_publisher, "
+					+ "hb_publish_year, hb_reg_date, hb_mod_date, hb_result_last_date) "
+					+ "VALUES(?, ?, ?, ?, ?, NOW(), NOW(), NOW())";
 		
 		int result = -1;
 		
 		try {
 			
-			result = jdbcTemplate.update(sql, b_no);
+			result = jdbcTemplate.update(sql, 
+											hopeBookVo.getU_m_no(), 
+											hopeBookVo.getHb_name(), 
+											hopeBookVo.getHb_author(), 
+											hopeBookVo.getHb_publisher(), 
+											hopeBookVo.getHb_publish_year());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -335,5 +302,25 @@ public class BookDao {
 		return result;
 		
 	}
-
+	
+	public List<HopeBookVo> selectRequestHopeBooks(int u_m_no) {
+		System.out.println("[BookDao] insertHopeBook()");
+		
+		String sql = "SELECT * FROM tbl_hope_book WHERE u_m_no = ?";
+		
+		List<HopeBookVo> hopeBookVos = null;
+		
+		try {
+			
+			RowMapper<HopeBookVo> rowMapper = BeanPropertyRowMapper.newInstance(HopeBookVo.class);
+			hopeBookVos = jdbcTemplate.query(sql, rowMapper, u_m_no);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+		return hopeBookVos;
+		
+	}
 }

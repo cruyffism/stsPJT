@@ -65,7 +65,7 @@ public class AdminMemberController {
 	//로그인 확인(관리자 로그인 인증)
 	@PostMapping("/loginConfirm")	//프론트(login_form.jsp)에서 넘어온 값을 adminMemberVo(name="a_m_id",name="a_m_pw")라는 매개변수로 받음   
 	public String loginConfirm(AdminMemberVo adminMemberVo, HttpSession session) { //이 매개변수를 adminMemberVo에 담아서 loginConfirm 메서드를 호출 할 때 같이 보낸다 !
-		System.out.println("[AdminMemberController] loginConfirm()");
+		System.out.println("[AdminMemberController] loginConfirm()");               // 로그인 성공 시 세션에 로그인 정보 추가를 위해 HttpSession도 매개변수로 받는다.
 		
 		String nextPage = "admin/member/login_ok";
 																			//매개변수를 쓰는 이유는 이렇게 가져다 쓰려고! 

@@ -15,9 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.office.library.admin.member.AdminMemberVo;
 import com.office.library.book.BookVo;
+import com.office.library.book.RentalBookVo;
 import com.office.library.book.admin.util.UploadFileService;
 
 @Controller
+//@Controller("admin.BookController")
 @RequestMapping("/book/admin")
 public class BookController {
 
@@ -151,5 +153,37 @@ public class BookController {
 			
 		}
 		return nextPage;
+	}
+	
+	//대출 도서 목록
+	@GetMapping("/getRentalBooks")
+	public String getRentalBooks(Model model) {
+		System.out.println("[BookController] getRentalBooks()");
+		
+		String nextPage = "admin/book/rental_books";
+		
+		List<RentalBookVo> rentalBookVos = bookService.getRentalBooks();
+		
+		model.addAttribute("rentalBookVos", rentalBookVos);
+		
+		return nextPage;
+		
+	}
+	
+	//도서 반납 확인
+	@GetMapping("/returnBookConfirm")
+	public String returnBookConfirm(@RequestParam("b_no") int b_no, 
+									@RequestParam("rb_no") int rb_no) {
+		System.out.println("[BookController] returnBookConfirm()");
+		
+		String nextPage = "admin/book/return_book_ok";
+		
+		int result = bookService.returnBookConfirm(b_no, rb_no);
+		
+		if (result <= 0)
+			nextPage = "admin/book/return_book_ng";
+		
+		return nextPage;
+		
 	}
 }

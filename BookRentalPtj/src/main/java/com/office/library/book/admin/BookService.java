@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.office.library.book.BookVo;
+import com.office.library.book.RentalBookVo;
 
 @Service
+//@Service("admin.BookService")
 public class BookService {
 
 	final static public int BOOK_ISBN_ALREADY_EXIST = 0; // 이미 등록된 도서
@@ -64,5 +66,23 @@ public class BookService {
 		System.out.println("[BookService] deleteBookConfirm()");
 		
 		return bookDao.deleteBook(b_no);
+	}
+	
+	public List<RentalBookVo> getRentalBooks() {
+		System.out.println("[BookService] getRentalBooks()");
+		
+		return bookDao.selectRentalBooks();
+		
+	}
+	
+	public int returnBookConfirm(int b_no, int rb_no) {
+		System.out.println("[BookService] getRentalBooks()");
+		
+		int result = bookDao.updateRentalBook(rb_no);
+		
+		if (result > 0) 
+			result = bookDao.updateBook(b_no);
+			
+		return result;
 	}
 }
