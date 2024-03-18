@@ -12,6 +12,8 @@
 			/WEB-INF/spring/jdbc-context.xml <!--  프로젝트가 서버에서 실행될 때 jdbc-context.xml을 인식하도록 설정 -->
 			/WEB-INF/spring/security-context.xml
 			/WEB-INF/spring/mail-context.xml
+			/WEB-INF/spring/file-context.xml
+			/WEB-INF/spring/properties-context.xml
 		</param-value>
 	</context-param>
 
