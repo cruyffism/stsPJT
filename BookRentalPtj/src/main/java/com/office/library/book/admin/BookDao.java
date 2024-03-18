@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.office.library.book.BookVo;
+import com.office.library.book.HopeBookVo;
 import com.office.library.book.RentalBookVo;
 
 @Component
@@ -333,6 +335,70 @@ public class BookDao {
 		}
 		
 		return result;
+		
+	}
+	
+	public List<HopeBookVo> selectHopeBooks() {
+		System.out.println("[BookDao] selectHopeBooks()");
+		
+		String sql =  "SELECT * FROM tbl_hope_book hb "
+					+ "JOIN tbl_user_member um "
+					+ "ON hb.u_m_no = um.u_m_no "
+					+ "ORDER BY hb.hb_no DESC";
+		
+		List<HopeBookVo> hopeBookVos = new ArrayList<HopeBookVo>();
+		
+		try {
+			
+			RowMapper<HopeBookVo> rowMapper = BeanPropertyRowMapper.newInstance(HopeBookVo.class);
+			hopeBookVos = jdbcTemplate.query(sql, rowMapper);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+		return hopeBookVos;
+		
+	}
+	
+	public void updateHopeBookResult(int hb_no) {
+		System.out.println("[BookDao] updateHopeBookResult()");
+		
+		String sql =  "UPDATE tbl_hope_book "
+					+ "SET hb_result = 1, hb_result_last_date = NOW() "
+					+ "WHERE hb_no = ?";
+		
+		try {
+			
+			jdbcTemplate.update(sql, hb_no);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+	}
+	
+	public List<BookVo> selectAllBooks() {
+		System.out.println("[BookDao] selectAllBooks()");
+		
+		String sql =  "SELECT * FROM tbl_book "
+					+ "ORDER BY b_reg_date DESC";
+		
+		List<BookVo> books = new ArrayList<BookVo>();
+		
+		try {
+			
+			RowMapper<BookVo> rowMapper = BeanPropertyRowMapper.newInstance(BookVo.class);
+			books = jdbcTemplate.query(sql, rowMapper);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+		return books.size() > 0 ? books : null;
 		
 	}
 
